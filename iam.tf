@@ -4,5 +4,5 @@ module "service-accounts" {
 
   project_id = var.project_id
   names = [local.sa_name]
-  project_roles = ""
+  project_roles = []
 }
