@@ -3,9 +3,6 @@ variable "remove_default_node_pool" {
   default = true
 }
 
-variable "cluster_name" {
-}
-
 variable "project_id" {
 }
 
@@ -34,6 +31,7 @@ variable "pod_log_service" {
 
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
+  default = 3
 }
 
 variable "master_authorized_networks" {
@@ -53,10 +51,10 @@ variable "master_authorized_networks" {
   ]
 }
 
-variable "host_network" {
+variable "vpc_id" {
 }
 
-variable "host_subnetwork" {
+variable "subnet_id" {
 }
 
 variable "pod_network_name" {
@@ -101,7 +99,7 @@ variable "node_disk_size_gb" {
 }
 
 variable "node_oauth_scopes" {
-  type = sting
+  type = string
   default = "https://www.googleapis.com/auth/cloud-platform"
 }
 
@@ -132,4 +130,5 @@ variable "horizontal_pod_autoscaling" {
   default = false
 }
 
-
+variable "random_id" {
+}

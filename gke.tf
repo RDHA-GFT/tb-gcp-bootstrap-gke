@@ -2,10 +2,10 @@ module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
 
   region                     = var.region
-  network                    = var.host_network
-  subnetwork                 = var.host_subnetwork
+  network                    = var.vpc_id
+  subnetwork                 = var.subnet_id
   project_id                 = var.project_id
-  name                       = var.cluster_name
+  name                       = local.cluster_name
   ip_range_pods              = var.pod_network_name
   ip_range_services          = var.service_network_name
   enable_private_endpoint    = false
@@ -34,7 +34,7 @@ module "gke" {
       max_count          = var.autoscaling_max_nodes
       machine_type       = var.node_machine_type
       disk_size_gb       = var.node_disk_size_gb
-      service_account    = var.node_service_account
+      service_account    = local.sa_name
     }
   ]
 
@@ -51,7 +51,7 @@ module "gke" {
 
     default-node-pool = [
       "gke-private",
-      var.cluster_name
+      local.cluster_name
     ]
   }
 }
