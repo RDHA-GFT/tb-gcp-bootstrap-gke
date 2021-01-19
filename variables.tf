@@ -76,6 +76,8 @@ variable "cluster_master_cidr" {
 
 variable "node_pool_name" {
   description = "The cluster pool name"
+  default = "gke-ec-node-pool"
+
 }
 
 variable "autoscaling_min_nodes" {
@@ -101,9 +103,6 @@ variable "node_disk_size_gb" {
 variable "node_oauth_scopes" {
   type = string
   default = "https://www.googleapis.com/auth/cloud-platform"
-}
-
-variable "node_service_account" {
 }
 
 variable "kubernetes_version" {

@@ -34,7 +34,7 @@ module "gke" {
       max_count          = var.autoscaling_max_nodes
       machine_type       = var.node_machine_type
       disk_size_gb       = var.node_disk_size_gb
-      service_account    = local.sa_name
+      service_account    = local.sa_email
     }
   ]
 
