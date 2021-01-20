@@ -45,7 +45,7 @@ variable "pod_log_service" {
 
 variable "default_max_pods_per_node" {
   description = "The maximum number of pods to schedule per node"
-  default = 8
+  default = 110
 }
 
 variable "master_authorized_networks" {
