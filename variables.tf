@@ -106,7 +106,7 @@ variable "autoscaling_max_nodes" {
 
 variable "node_machine_type" {
   type    = string
-  default = "n1-standard-4"
+  default = "e2-standard-4"
 }
 
 variable "node_disk_size_gb" {
