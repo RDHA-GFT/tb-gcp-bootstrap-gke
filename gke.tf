@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
+  source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   version                    = "12.3.0"
 
   region                     = var.region
@@ -23,8 +23,8 @@ module "gke" {
   name                       = local.cluster_name
   ip_range_pods              = var.pod_network_name
   ip_range_services          = var.service_network_name
-  enable_private_endpoint    = false
-  enable_private_nodes       = false
+  enable_private_endpoint    = true
+  enable_private_nodes       = true
   remove_default_node_pool   = var.remove_default_node_pool
   initial_node_count         = var.initial_node_count
   maintenance_start_time     = var.maintenance_start_time
