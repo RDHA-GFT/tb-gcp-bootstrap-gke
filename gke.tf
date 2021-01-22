@@ -179,19 +179,14 @@ data "google_compute_image" "centos_image" {
   project = "centos-cloud"
 }
 
-resource "google_compute_instance_template" "squid_proxy_template" {
+resource "google_compute_instance" "squid_proxy_instance" {
   project = var.project_id
   name    = "tb-kube-proxy-template"
 
   machine_type = "n1-standard-2"
 
-  scheduling {
-    automatic_restart   = true
-    on_host_maintenance = "MIGRATE"
-  }
-
   // boot disk
-  disk {
+  boot_disk {
     source_image = data.google_compute_image.centos_image.self_link
   }
 
@@ -201,7 +196,7 @@ resource "google_compute_instance_template" "squid_proxy_template" {
 
   service_account {
     email  = local.sa_email
-    scopes = "https://www.googleapis.com/auth/cloud-platform"
+    scopes = ["cloud-platform"]
   }
 
   metadata_startup_script = "./squid_startup.sh"
