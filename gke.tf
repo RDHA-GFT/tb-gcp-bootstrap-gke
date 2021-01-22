@@ -187,7 +187,7 @@ resource "google_compute_instance" "squid_proxy_instance" {
 
   // boot disk
   boot_disk {
-    source_image = data.google_compute_image.centos_image.self_link
+    source = data.google_compute_image.centos_image.self_link
   }
 
   network_interface {
