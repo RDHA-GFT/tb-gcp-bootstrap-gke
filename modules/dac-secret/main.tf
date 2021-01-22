@@ -13,11 +13,11 @@ resource "null_resource" "kubernetes_dac_secret_cicd" {
   }
 
   provisioner "local-exec" {
-    command = "echo 'kubectl --context=${var.context_name} create secret generic dac-user-pass -n cicd --from-literal=username=dac --from-literal=password='${random_password.password.result}' --type=kubernetes.io/basic-auth' | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/kube.sh"
+    command = "echo 'kubectl --context=${var.context_name} create secret generic dac-user-pass -n cicd --from-literal=username=dac --from-literal=password='${random_password.password.result}' --type=kubernetes.io/basic-auth' | tee -a ./kube.sh"
   }
 
   provisioner "local-exec" {
-    command = "echo 'kubectl --context=${self.triggers.k8_name} delete secret dac-user-pass' -n cicd | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/kube.sh"
+    command = "echo 'kubectl --context=${self.triggers.k8_name} delete secret dac-user-pass' -n cicd | tee -a ./kube.sh"
     when    = destroy
   }
 }
@@ -31,11 +31,11 @@ resource "null_resource" "kubernetes_dac_secret_ssp" {
   }
 
   provisioner "local-exec" {
-    command = "echo 'kubectl --context=${var.context_name} create secret generic dac-user-pass -n ssp --from-literal=username=dac --from-literal=password='${random_password.password.result}' --type=kubernetes.io/basic-auth' | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/kube.sh"
+    command = "echo 'kubectl --context=${var.context_name} create secret generic dac-user-pass -n ssp --from-literal=username=dac --from-literal=password='${random_password.password.result}' --type=kubernetes.io/basic-auth' | tee -a ./kube.sh"
   }
 
   provisioner "local-exec" {
-    command = "echo 'kubectl --context=${self.triggers.k8_name} delete secret dac-user-pass' -n ssp | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/kube.sh"
+    command = "echo 'kubectl --context=${self.triggers.k8_name} delete secret dac-user-pass' -n ssp | tee -a ./kube.sh"
     when    = destroy
   }
 }
