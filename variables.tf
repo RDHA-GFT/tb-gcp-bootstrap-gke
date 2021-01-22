@@ -191,11 +191,6 @@ variable "itop_database_user_name" {
   type        = string
 }
 
-variable "clusters_master_whitelist_ip" {
-  description = "IP to add to the GKE clusters' master authorized networks"
-  type        = string
-}
-
 variable "ec_ui_source_bucket" {
   default     = "tranquility-base-ui"
   description = "GCS Bucket hosting Self Service Portal Angular source code."
@@ -233,11 +228,6 @@ variable "sharedservice_jenkinsmaster_yaml_path" {
   default     = "./modules/kubernetes_yaml/jenkins-master.yaml"
   description = "Path to the yaml file to deploy Jenkins on the shared gke-ec cluster"
   type        = string
-}
-
-variable "labels" {
-  type        = map(string)
-  description = "Labels to assign to resources."
 }
 
 variable "folder_id" {
