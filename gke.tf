@@ -182,6 +182,7 @@ data "google_compute_image" "centos_image" {
 resource "google_compute_instance" "squid_proxy_instance" {
   project = var.project_id
   name    = "tb-kube-proxy-template"
+  zone    = "eu-west1-a"
 
   machine_type = "n1-standard-2"
 
