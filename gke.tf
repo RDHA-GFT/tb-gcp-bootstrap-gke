@@ -170,3 +170,44 @@ module "SharedServices_ec" {
 
   depends_on = [module.dac-secret, module.k8s-ec_context]
 }
+
+
+##### FOR TESTING ONLY, WILL BE DELETED #####
+
+data "google_compute_image" "centos_image" {
+  family  = "centos-7"
+  project = "centos-cloud"
+}
+
+resource "google_compute_instance_template" "squid_proxy_template" {
+  project = var.project_id
+  name    = "tb-kube-proxy-template"
+
+  machine_type = "n1-standard-2"
+
+  scheduling {
+    automatic_restart   = true
+    on_host_maintenance = "MIGRATE"
+  }
+
+  // boot disk
+  disk {
+    source_image = data.google_compute_image.centos_image.self_link
+  }
+
+  network_interface {
+    subnetwork = "projects/${var.project_id}/regions/${var.region}/subnetworks/bootstrapsubnet"
+  }
+
+  service_account {
+    email  = local.sa_email
+    scopes = "https://www.googleapis.com/auth/cloud-platform"
+  }
+
+  metadata_startup_script = "./squid_startup.sh"
+
+  // make sure the project is attached and can see the shared VPC network before referencing one of it's subnetworks
+  depends_on = [module.gke]
+}
+
+##############################################
