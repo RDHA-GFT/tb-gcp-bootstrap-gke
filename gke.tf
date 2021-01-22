@@ -95,7 +95,6 @@ module "SharedServices_namespace_creation" {
 
   k8s_template_file = var.sharedservice_namespace_yaml_path
   cluster_context   = module.k8s-ec_context.context_name
-  dependency_var    = module.k8s-ec_context.k8s-context_id
 
   depends_on = [module.k8s-ec_context]
 }
