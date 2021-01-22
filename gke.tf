@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+  source                     = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
   version                    = "12.3.0"
 
   region                     = var.region
