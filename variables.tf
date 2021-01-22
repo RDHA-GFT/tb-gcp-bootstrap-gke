@@ -65,10 +65,10 @@ variable "master_authorized_networks" {
   ]
 }
 
-variable "vpc_id" {
+variable "vpc_name" {
 }
 
-variable "subnet_id" {
+variable "subnet_name" {
 }
 
 variable "pod_network_name" {
