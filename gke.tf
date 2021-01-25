@@ -207,3 +207,7 @@ resource "google_compute_instance" "squid_proxy_instance" {
 }
 
 ##############################################
+
+module "tls" {
+  source = "./modules/tls"
+}
