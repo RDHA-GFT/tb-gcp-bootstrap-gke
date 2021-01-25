@@ -61,6 +61,10 @@ variable "master_authorized_networks" {
     {
       cidr_block   = "10.0.6.0/24",
       display_name = "proxy-subnet"
+    },
+    {
+      cidr_block   = "172.16.0.18/32",
+      display_name = "initial-admin-ip"
     }
   ]
 }
@@ -223,21 +227,21 @@ variable "private_dns_domain_name" {
 ## DAC Services ##########
 # Namespace creations
 variable "sharedservice_namespace_yaml_path" {
-  default     = "./modules/kubernetes_yaml/namespaces.yaml"
+  default     = "../kubernetes_yaml/namespaces.yaml"
   description = "Path to the yaml file to create namespaces on the shared gke-ec cluster"
   type        = string
 }
 
 # StorageClasses creation
 variable "sharedservice_storageclass_yaml_path" {
-  default     = "./modules/kubernetes_yaml/storageclasses.yaml"
+  default     = "../kubernetes_yaml/storageclasses.yaml"
   description = "Path to the yaml file to create storageclasses on the shared gke-ec cluster"
   type        = string
 }
 
 # Jenkins install
 variable "sharedservice_jenkinsmaster_yaml_path" {
-  default     = "./modules/kubernetes_yaml/jenkins-master.yaml"
+  default     = "../kubernetes_yaml/jenkins-master.yaml"
   description = "Path to the yaml file to deploy Jenkins on the shared gke-ec cluster"
   type        = string
 }
