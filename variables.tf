@@ -241,7 +241,7 @@ variable "sharedservice_storageclass_yaml_path" {
 
 # Jenkins install
 variable "sharedservice_jenkinsmaster_yaml_path" {
-  default     = "../kubernetes_yaml/jenkins-master.yaml"
+  default     = "./jenkins-master.yaml"
   description = "Path to the yaml file to deploy Jenkins on the shared gke-ec cluster"
   type        = string
 }
