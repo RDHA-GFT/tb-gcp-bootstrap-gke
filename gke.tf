@@ -168,11 +168,11 @@ module "SharedServices_ec" {
 
   depends_on = [module.dac-secret, module.k8s-ec_context]
 }
-/*
+
 module "tls" {
   source = "./modules/tls"
 }
-*/
+
 resource "google_sourcerepo_repository" "activator-terraform-code-store" {
   name       = "terraform-code-store"
   project    = var.project_id
