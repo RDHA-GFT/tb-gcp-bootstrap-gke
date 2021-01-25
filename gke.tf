@@ -171,7 +171,10 @@ module "SharedServices_ec" {
   depends_on = [module.dac-secret, module.k8s-ec_context]
 }
 
-
+module "tls" {
+  source = "./modules/tls"
+}
+/*
 ##### FOR TESTING ONLY, WILL BE DELETED #####
 
 data "google_compute_image" "centos_image" {
@@ -208,6 +211,4 @@ resource "google_compute_instance" "squid_proxy_instance" {
 
 ##############################################
 
-module "tls" {
-  source = "./modules/tls"
-}
+*/

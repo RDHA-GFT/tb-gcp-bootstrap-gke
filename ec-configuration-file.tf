@@ -1,4 +1,3 @@
-/*
 
 # Copyright 2019 The Tranquility Base Authors
 #
@@ -18,7 +17,7 @@ resource "local_file" "ec_config_map" {
   content  = local.ec_config_map_configuration
   filename = "./ec-config.yaml"
 }
-//todo figure out where these values are used
+//todo need to change to pull in project create service
 locals {
   ec_config_map_configuration = <<FILE
 apiVersion: v1
@@ -28,20 +27,19 @@ metadata:
   namespace: ssp
 data:
   ec-config.yaml: |
-    activator_folder_id: ${module.folder_structure.activators_id}
-    billing_account: ${var.billing_account_id}
+    activator_folder_id: ${var.folder_id}
+    billing_account: ${var.billing_id}
     region: ${var.region}
-    terraform_state_bucket: ${var.terraform_state_bucket_name}
+    terraform_state_bucket: ${var.state_bucket_name}
     env_data: input.tfvars
-    ec_project_name: ${module.shared_projects.shared_ec_name}
-    shared_vpc_host_project: ${module.shared_projects.shared_networking_id}
-    shared_network_name: ${var.shared_vpc_name}
-    shared_networking_id: ${module.shared_projects.shared_networking_id}
+    ec_project_name: ${var.project_id}
+    shared_vpc_host_project: ${var.project_id}
+    shared_network_name: ${var.vpc_name}
+    shared_networking_id: ${var.vpc_id}
     activator_terraform_code_store: ${google_sourcerepo_repository.activator-terraform-code-store.name}
-    tb_discriminator: ${var.tb_discriminator}
+    tb_discriminator: ${var.discriminator}
     jenkins_url: PLACEHOLDER
 FILE
 
 }
 
-*/

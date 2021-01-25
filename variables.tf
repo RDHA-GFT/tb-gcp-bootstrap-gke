@@ -68,7 +68,19 @@ variable "master_authorized_networks" {
 variable "vpc_name" {
 }
 
+variable "vpc_id" {
+
+}
 variable "subnet_name" {
+}
+
+variable "discriminator" {
+}
+
+variable "billing_id" {
+}
+
+variable "state_bucket_name" {
 }
 
 variable "pod_network_name" {
