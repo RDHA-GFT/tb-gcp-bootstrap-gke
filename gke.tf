@@ -149,7 +149,7 @@ module "SharedServices_jenkinsmaster_creation" {
 
   depends_on = [module.dac-secret, null_resource.kubernetes_jenkins_service_account_key_secret]
 }
-/*
+
 //todo figure out where these values are used
 module "SharedServices_configuration_file" {
   source = "./modules/start_service"
@@ -159,8 +159,6 @@ module "SharedServices_configuration_file" {
 
   depends_on = [module.k8s-ec_context]
 }
-*/
-
 
 module "SharedServices_ec" {
   source = "./modules/start_service"
@@ -174,6 +172,23 @@ module "SharedServices_ec" {
 module "tls" {
   source = "./modules/tls"
 }
+
+resource "google_sourcerepo_repository" "activator-terraform-code-store" {
+  name       = "terraform-code-store"
+  project    = var.project_id
+}
+
+resource "google_sourcerepo_repository_iam_binding" "terraform-code-store-admin-binding" {
+  repository = google_sourcerepo_repository.activator-terraform-code-store.name
+  project    = var.project_id
+  role       = "roles/source.admin"
+
+  members = [
+    local.service_account_name,
+  ]
+}
+
+
 /*
 ##### FOR TESTING ONLY, WILL BE DELETED #####
 
