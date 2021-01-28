@@ -227,7 +227,7 @@ variable "private_dns_domain_name" {
 ## DAC Services ##########
 # Namespace creations
 variable "sharedservice_namespace_yaml_path" {
-  default     = "../kubernetes_yaml/namespaces.yaml"
+  default     = "/home/amce/tb-gcp-management-plane/namespaces.yaml"
   description = "Path to the yaml file to create namespaces on the shared gke-ec cluster"
   type        = string
 }
