@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-/*
+
 #CREATE-SERVICE-ACCOUNT
 resource "google_service_account" "activator" {
   account_id   = "activator-dev-sa"
@@ -46,7 +46,7 @@ resource "google_billing_account_iam_member" "ba-billing-account-user" {
   member             = local.service_account_name
 }
 */
-/*
+
 resource "google_service_account_key" "mykey" {
   service_account_id = google_service_account.activator.name
   depends_on         = [google_service_account.activator]
@@ -56,4 +56,3 @@ resource "local_file" "ec_service_account_key" {
   content  = base64decode(google_service_account_key.mykey.private_key)
   filename = "/tmp/tb-gcp-tr/bootstrap/ec-service-account-config.json"
 }
-*/

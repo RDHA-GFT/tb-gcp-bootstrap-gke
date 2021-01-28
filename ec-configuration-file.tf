@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-/*
+
 resource "local_file" "ec_config_map" {
   content  = local.ec_config_map_configuration
   filename = "./ec-config.yaml"
@@ -43,4 +43,3 @@ FILE
 
 }
 
-*/
