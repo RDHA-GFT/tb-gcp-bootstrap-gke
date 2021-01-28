@@ -70,7 +70,7 @@ module "gke" {
     ]
   }
 }
-
+/*
 module "dac-secret" {
   source = "./modules/dac-secret"
 
@@ -79,7 +79,7 @@ module "dac-secret" {
 
   depends_on = [module.SharedServices_namespace_creation, module.k8s-ec_context]
 }
-
+*/
 module "k8s-ec_context" {
   source = "./modules/k8s-context"
 
@@ -98,7 +98,7 @@ module "SharedServices_namespace_creation" {
 
   depends_on = [module.k8s-ec_context]
 }
-
+/*
 resource "null_resource" "kubernetes_service_account_key_secret" {
   triggers = {
     content = module.SharedServices_namespace_creation.id
@@ -189,7 +189,7 @@ resource "google_sourcerepo_repository_iam_binding" "terraform-code-store-admin-
 }
 
 
-/*
+
 ##### FOR TESTING ONLY, WILL BE DELETED #####
 
 data "google_compute_image" "centos_image" {
