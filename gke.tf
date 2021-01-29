@@ -184,7 +184,7 @@ EOF
   depends_on = [google_compute_instance_group_manager.squid_proxy_group]
 }
 
-
+/*
 resource "null_resource" "flux_installed" {
   provisioner "local-exec" {
     command = <<EOT
@@ -194,3 +194,4 @@ resource "null_resource" "flux_installed" {
   depends_on = [null_resource.start-iap-tunnel]
 }
 
+*/
