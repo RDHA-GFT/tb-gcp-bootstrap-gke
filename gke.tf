@@ -154,7 +154,7 @@ EOF
 }
 
 
-resource "null_resource" "k8s_config" {
+resource "null_resource" "flux_installed" {
   provisioner "local-exec" {
     command = <<EOT
     kubectl apply -f https://github.com/fluxcd/flux2/releases/latest/download/install.yaml
