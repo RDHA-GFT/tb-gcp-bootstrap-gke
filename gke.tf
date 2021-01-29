@@ -70,3 +70,85 @@ module "gke" {
     ]
   }
 }
+
+resource "google_service_account" "proxy-sa-res" {
+  account_id   = "proxy-sa"
+  display_name = "proxy-sa"
+  project      = var.project_id
+}
+
+resource "null_resource" "k8s_config" {
+  provisioner "local-exec" {
+    command = <<EOT
+    gcloud beta container clusters get-credentials "${local.cluster_name}" --region="${var.region}" --project="${var.project_id}" --internal-ip
+    EOT
+  }
+  depends_on = [module.gke]
+}
+
+data "google_compute_image" "centos_image" {
+  family  = "centos-7"
+  project = "centos-cloud"
+}
+
+resource "google_compute_instance_template" "squid_proxy_template" {
+  project = var.project_id
+  name    = "tb-kube-proxy-template"
+
+  machine_type = "n1-standard-2"
+
+  scheduling {
+    automatic_restart   = true
+    on_host_maintenance = "MIGRATE"
+  }
+
+  // boot disk
+  disk {
+    source_image = data.google_compute_image.centos_image.self_link
+  }
+
+  network_interface {
+    subnetwork = "projects/${var.project_id}/regions/${var.region}/subnetworks/${var.subnet_name}"
+  }
+
+  service_account {
+    email  = google_service_account.proxy-sa-res.email
+    scopes = var.scopes
+  }
+
+  metadata_startup_script = file("${path.module}/squid_startup.sh")
+
+  // make sure the project is attached and can see the shared VPC network before referencing one of it's subnetworks
+  depends_on = [module.gke]
+}
+
+resource "google_compute_instance_group_manager" "squid_proxy_group" {
+  project            = var.project_id
+  base_instance_name = "tb-kube-proxy"
+  zone               = var.region_zone
+
+  version {
+    instance_template = google_compute_instance_template.squid_proxy_template.self_link
+    name              = "tb-kube-proxy-template"
+  }
+
+  target_size = 1
+  name        = "tb-squid-proxy-group"
+
+  depends_on = [module.gke, module.service-accounts]
+}
+
+resource "null_resource" "start-iap-tunnel" {
+
+  provisioner "local-exec" {
+    command = <<EOF
+echo '
+INSTANCE=$(gcloud compute instance-groups managed list-instances tb-squid-proxy-group --project=${var.project_id} --zone ${var.region_zone} --format="value(instance.scope(instances))")
+gcloud compute start-iap-tunnel $INSTANCE 3128 --local-host-port localhost:3128 --project ${var.project_id} --zone ${var.region_zone} > /dev/null 2>&1 &
+TUNNELPID=$!
+sleep 10
+export HTTPS_PROXY="localhost:3128"' | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/iap-tunnel.sh
+EOF
+  }
+  depends_on = [google_compute_instance_group_manager.squid_proxy_group]
+}

@@ -161,3 +161,14 @@ variable "horizontal_pod_autoscaling" {
 
 variable "random_id" {
 }
+###
+
+variable "scopes" {
+  type        = list(string)
+  default     = ["https://www.googleapis.com/auth/cloud-platform"]
+  description = "A list of service scopes attached to the bootstrap terraform server. To allow full access to all Cloud APIs, use the cloud-platform scope. For other scopes see here: https://cloud.google.com/sdk/gcloud/reference/alpha/compute/instances/set-scopes#--scopes "
+}
+
+variable "region_zone" {
+  default = "europe-west1-b"
+}
