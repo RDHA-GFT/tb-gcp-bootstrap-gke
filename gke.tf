@@ -89,6 +89,25 @@ resource "google_folder_iam_member" "sa-folder-admin-role" {
   depends_on = [google_service_account.proxy-sa-res]
 }
 
+resource "google_compute_firewall" "allow_proxy_http_ingress" {
+  name    = "allow-proxy-http-ingress"
+  network = var.vpc_name
+  project = var.project_id
+
+  allow {
+    protocol = "tcp"
+    ports    = [80, 443, 8008, 8080, 8443]
+  }
+
+  log_config {
+    metadata = "INCLUDE_ALL_METADATA"
+  }
+
+  source_service_accounts = [
+    google_service_account.proxy-sa-res.email
+  ]
+}
+
 resource "null_resource" "k8s_config" {
   provisioner "local-exec" {
     command = <<EOT
