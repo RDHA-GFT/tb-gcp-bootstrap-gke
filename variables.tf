@@ -186,3 +186,5 @@ variable "main_iam_service_account_roles" {
   ]
   description = "Roles attached to service account"
 }
+
+variable "folder_id" {}
