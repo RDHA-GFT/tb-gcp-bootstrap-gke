@@ -172,3 +172,17 @@ variable "scopes" {
 variable "region_zone" {
   default = "europe-west1-b"
 }
+
+variable "main_iam_service_account_roles" {
+  type = list(string)
+  default = [
+    "roles/resourcemanager.folderCreator",
+    "roles/resourcemanager.projectCreator",
+    "roles/resourcemanager.projectDeleter",
+    "roles/billing.projectManager",
+    "roles/compute.xpnAdmin",
+    "roles/editor",
+    "roles/compute.networkUser",
+  ]
+  description = "Roles attached to service account"
+}
