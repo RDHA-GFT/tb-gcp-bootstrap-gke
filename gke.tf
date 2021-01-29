@@ -147,7 +147,7 @@ INSTANCE=$(gcloud compute instance-groups managed list-instances tb-squid-proxy-
 gcloud compute start-iap-tunnel $INSTANCE 3128 --local-host-port localhost:3128 --project ${var.project_id} --zone ${var.region_zone} > /dev/null 2>&1 &
 TUNNELPID=$!
 sleep 10
-export HTTPS_PROXY="localhost:3128"' | tee -a /opt/tb/repo/tb-gcp-tr/landingZone/iap-tunnel.sh
+export HTTPS_PROXY="localhost:3128"'
 EOF
   }
   depends_on = [google_compute_instance_group_manager.squid_proxy_group]
