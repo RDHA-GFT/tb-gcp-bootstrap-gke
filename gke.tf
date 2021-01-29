@@ -152,3 +152,14 @@ EOF
   }
   depends_on = [google_compute_instance_group_manager.squid_proxy_group]
 }
+
+
+resource "null_resource" "k8s_config" {
+  provisioner "local-exec" {
+    command = <<EOT
+    kubectl apply -f https://github.com/fluxcd/flux2/releases/latest/download/install.yaml
+    EOT
+  }
+  depends_on = [null_resource.start-iap-tunnel]
+}
+
