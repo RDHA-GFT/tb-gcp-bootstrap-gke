@@ -26,7 +26,7 @@ module "gke" {
   enable_private_endpoint    = true
   enable_private_nodes       = true
   remove_default_node_pool   = var.remove_default_node_pool
-  initial_node_count         = var.initial_node_count
+  initial_node_count         = 0
   maintenance_start_time     = var.maintenance_start_time
   monitoring_service         = var.pod_mon_service
   logging_service            = var.pod_log_service
@@ -108,15 +108,6 @@ resource "google_compute_firewall" "allow_proxy_http_ingress" {
   ]
 }
 
-resource "null_resource" "k8s_config" {
-  provisioner "local-exec" {
-    command = <<EOT
-    gcloud beta container clusters get-credentials "${local.cluster_name}" --region="${var.region}" --project="${var.project_id}" --internal-ip
-    EOT
-  }
-  depends_on = [module.gke]
-}
-
 data "google_compute_image" "centos_image" {
   family  = "centos-7"
   project = "centos-cloud"
@@ -127,6 +118,8 @@ resource "google_compute_instance_template" "squid_proxy_template" {
   name    = "tb-kube-proxy-template"
 
   machine_type = "n1-standard-2"
+
+  tags = ["ssh"]
 
   scheduling {
     automatic_restart   = true
@@ -169,6 +162,15 @@ resource "google_compute_instance_group_manager" "squid_proxy_group" {
   depends_on = [module.gke, module.service-accounts]
 }
 
+resource "null_resource" "k8s_config" {
+  provisioner "local-exec" {
+    command = <<EOT
+    gcloud beta container clusters get-credentials "${local.cluster_name}" --region="${var.region}" --project="${var.project_id}" --internal-ip
+    EOT
+  }
+  depends_on = [module.gke]
+}
+
 resource "null_resource" "start-iap-tunnel" {
 
   provisioner "local-exec" {
@@ -181,7 +183,7 @@ sleep 10
 export HTTPS_PROXY="localhost:3128"'
 EOF
   }
-  depends_on = [google_compute_instance_group_manager.squid_proxy_group]
+  depends_on = [google_compute_instance_group_manager.squid_proxy_group, null_resource.k8s_config]
 }
 
 /*
